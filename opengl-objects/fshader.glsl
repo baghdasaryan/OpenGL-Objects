@@ -1,5 +1,5 @@
 #version 150
-
+/*
 in vec3 fN;		// normal at current position
 in vec3 fV;		// vector from point to viewer
 in vec3 fL;		// vector from point to light
@@ -42,4 +42,12 @@ void main()
 
 	gl_FragColor = ambient + diffuse + specular;
 	gl_FragColor.a = 1.0;
+}
+*/
+out vec4  fColor;
+uniform vec4 color;
+
+void main()
+{
+	fColor = color;
 }
