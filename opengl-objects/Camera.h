@@ -17,7 +17,6 @@
 #include <math.h>
 #include "Angel.h"
 
-
 class Camera
 {
 public:
@@ -70,5 +69,4 @@ private:
 
 	mat4 m_perspective;
 };
-
 #endif  // __CAMERA_H__

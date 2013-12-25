@@ -13,6 +13,18 @@
 #include "Rectangle.h"
 
 
+// ############################################ //
+// ############################################ //
+// ####                                    #### //
+// ####    Program: Cube                   #### //
+// ####    Language: C++                   #### //
+// ####    Author: Georgi Baghdasaryan     #### //
+// ####    Email: baghdasaryan@ucla.edu    #### //
+// ####                                    #### //
+// ############################################ //
+// ############################################ //
+
+
 // Initialize data
 Cube::Cube(float size, vec3 location, vec4 color, float ambient, float diffuse,
 		float specular, float shininess, Camera *camera, Light *light)
@@ -28,26 +40,6 @@ Cube::Cube(float size, vec3 location, vec4 color, float ambient, float diffuse,
 	m_lightPtr = light;
 	m_textureOn = false;
 	m_rotAngle = 0.0f;
-}
-
-void Cube::genPoints(vec3 norm, int a, int b, int c, int d, bool faceTriangles)
-{
-	if(faceTriangles)	// for cube vertices
-	{
-		m_vertices[m_index] = vertices[a];	m_normals[m_index] = norm;	m_textureUV[m_index++] = vec2(0.0, 1.0);
-		m_vertices[m_index] = vertices[b];	m_normals[m_index] = norm;	m_textureUV[m_index++] = vec2(0.0, 0.0);
-		m_vertices[m_index] = vertices[c];	m_normals[m_index] = norm;	m_textureUV[m_index++] = vec2(1.0, 0.0);
-		m_vertices[m_index] = vertices[a];	m_normals[m_index] = norm;	m_textureUV[m_index++] = vec2(0.0, 1.0);
-		m_vertices[m_index] = vertices[c];	m_normals[m_index] = norm;	m_textureUV[m_index++] = vec2(1.0, 0.0);
-		m_vertices[m_index] = vertices[d];	m_normals[m_index] = norm;	m_textureUV[m_index++] = vec2(1.0, 1.0);
-	}
-	else				// for edge vertices
-	{
-		m_edges[m_index++] = vertices[a];
-		m_edges[m_index++] = vertices[b];
-		m_edges[m_index++] = vertices[c];
-		m_edges[m_index++] = vertices[d];
-	}
 }
 
 void Cube::genCube()
@@ -69,6 +61,26 @@ void Cube::genCube()
 	genPoints(vec3( 0.0, 0.0, 0.0), 5, 6, 6, 7, false);
 	genPoints(vec3( 0.0, 0.0, 0.0), 7, 4, 1, 5, false);
 	genPoints(vec3( 0.0, 0.0, 0.0), 2, 6, 3, 7, false);
+}
+
+void Cube::genPoints(vec3 norm, int a, int b, int c, int d, bool faceTriangles)
+{
+	if(faceTriangles)	// for cube vertices
+	{
+		m_vertices[m_index] = vertices[a];	m_normals[m_index] = norm;	m_textureUV[m_index++] = vec2(0.0, 1.0);
+		m_vertices[m_index] = vertices[b];	m_normals[m_index] = norm;	m_textureUV[m_index++] = vec2(0.0, 0.0);
+		m_vertices[m_index] = vertices[c];	m_normals[m_index] = norm;	m_textureUV[m_index++] = vec2(1.0, 0.0);
+		m_vertices[m_index] = vertices[a];	m_normals[m_index] = norm;	m_textureUV[m_index++] = vec2(0.0, 1.0);
+		m_vertices[m_index] = vertices[c];	m_normals[m_index] = norm;	m_textureUV[m_index++] = vec2(1.0, 0.0);
+		m_vertices[m_index] = vertices[d];	m_normals[m_index] = norm;	m_textureUV[m_index++] = vec2(1.0, 1.0);
+	}
+	else				// for edge vertices
+	{
+		m_edges[m_index++] = vertices[a];
+		m_edges[m_index++] = vertices[b];
+		m_edges[m_index++] = vertices[c];
+		m_edges[m_index++] = vertices[d];
+	}
 }
 
 void Cube::init(const char *textureFile)
@@ -96,7 +108,7 @@ void Cube::init(const char *textureFile)
     glGenBuffers(1, &m_vertexBufferObject);
     glBindBuffer(GL_ARRAY_BUFFER, m_vertexBufferObject);    
 
-	// Initialize the buffer
+	// Initialize buffer
 	glBufferData(GL_ARRAY_BUFFER, (sizeof(m_vertices[0]) + sizeof(m_normals[0]) + sizeof(m_textureUV[0]))*numVertices + sizeof(m_edges[0])*numEdges, NULL, GL_STATIC_DRAW);
 	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(m_vertices[0])*numVertices, m_vertices);
 	glBufferSubData(GL_ARRAY_BUFFER, sizeof(m_vertices[0])*numVertices, sizeof(m_edges[0])*numEdges, m_edges);
@@ -175,6 +187,7 @@ void Cube::draw(bool edges, bool mesh)
 	// vShader
 	glUniform4fv(glGetUniformLocation(m_program, "camPos"), 1, m_camPtr->getPosition());
 	glUniform4fv(glGetUniformLocation(m_program, "lightPos"), 1, m_lightPtr->getPosition());
+
 
 	// fShader
 	glUniform1f(glGetUniformLocation(m_program, "Ambient"), m_ambient);

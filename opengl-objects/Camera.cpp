@@ -12,7 +12,8 @@
 
 #include "Camera.h"
 
-Camera::Camera(float radius, float initAngle, GLfloat zNear, GLfloat zFar, GLfloat fovy)
+Camera::Camera(float radius, float initAngle, 
+			   GLfloat zNear, GLfloat zFar, GLfloat fovy)
 {
 	m_angle = 90.0 - initAngle;
 

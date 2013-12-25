@@ -23,17 +23,18 @@
 #include "Light.h"
 #include "tga.h"
 
+
 // Point details
 const int numVertices = 36;
 const int numEdges = 24;
 const vec4 vertices[8] = {
 	vec4( -0.5, -0.5,  0.5, 1.0 ),
-	vec4( -0.5,  0.5,  0.5, 1.0 ),
-	vec4(  0.5,  0.5,  0.5, 1.0 ),
+	vec4( -0.5,  0.5,  0.5, 1.0 ), 
+	vec4(  0.5,  0.5,  0.5, 1.0 ), 
 	vec4(  0.5, -0.5,  0.5, 1.0 ),
 	vec4( -0.5, -0.5, -0.5, 1.0 ),
 	vec4( -0.5,  0.5, -0.5, 1.0 ),
-	vec4(  0.5,  0.5, -0.5, 1.0 ),
+	vec4(  0.5,  0.5, -0.5, 1.0 ), 
 	vec4(  0.5, -0.5, -0.5, 1.0 )
 };
 
@@ -103,6 +104,7 @@ private:
 	// Helper variables
 	int m_index;
 };
+
 
 
 
