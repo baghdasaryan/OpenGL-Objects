@@ -12,24 +12,11 @@
 
 #include "Rectangle.h"
 
-
-// ############################################ //
-// ############################################ //
-// ####                                    #### //
-// ####    Program: Cube                   #### //
-// ####    Language: C++                   #### //
-// ####    Author: Georgi Baghdasaryan     #### //
-// ####    Email: baghdasaryan@ucla.edu    #### //
-// ####                                    #### //
-// ############################################ //
-// ############################################ //
-
-
 // Initialize data
-Cube::Cube(float size, vec3 location, vec4 color, float ambient, float diffuse,
+ObjectRectangle::ObjectRectangle(float size, vec3 location, vec4 color, float ambient, float diffuse,
 		float specular, float shininess, Camera *camera, Light *light)
 {
-	m_size = size;
+	m_scale = size;
 	m_color = color;
 	m_location = location;
 	m_ambient = ambient;
@@ -42,9 +29,9 @@ Cube::Cube(float size, vec3 location, vec4 color, float ambient, float diffuse,
 	m_rotAngle = 0.0f;
 }
 
-void Cube::genCube()
+void ObjectRectangle::genRectangle()
 {
-	// generate points for drawing cube faces
+	// generate points for drawing Rectangle faces
 	m_index = 0;
 	genPoints(vec3( 0.0,  0.0,  1.0), 1, 0, 3, 2, true);
 	genPoints(vec3( 1.0,  0.0,  0.0), 2, 3, 7, 6, true);
@@ -53,7 +40,7 @@ void Cube::genCube()
 	genPoints(vec3( 0.0,  0.0, -1.0), 6, 7, 4, 5, true);
 	genPoints(vec3(-1.0,  0.0,  0.0), 5, 4, 0, 1, true);
 	
-	// generate points for drawing cube edges
+	// generate points for drawing Rectangle edges
 	m_index = 0;
 	genPoints(vec3( 0.0, 0.0, 0.0), 0, 1, 1, 2, false);
 	genPoints(vec3( 0.0, 0.0, 0.0), 2, 3, 3, 0, false);
@@ -63,9 +50,9 @@ void Cube::genCube()
 	genPoints(vec3( 0.0, 0.0, 0.0), 2, 6, 3, 7, false);
 }
 
-void Cube::genPoints(vec3 norm, int a, int b, int c, int d, bool faceTriangles)
+void ObjectRectangle::genPoints(vec3 norm, int a, int b, int c, int d, bool faceTriangles)
 {
-	if(faceTriangles)	// for cube vertices
+	if(faceTriangles)	// for Rectangle vertices
 	{
 		m_vertices[m_index] = vertices[a];	m_normals[m_index] = norm;	m_textureUV[m_index++] = vec2(0.0, 1.0);
 		m_vertices[m_index] = vertices[b];	m_normals[m_index] = norm;	m_textureUV[m_index++] = vec2(0.0, 0.0);
@@ -83,7 +70,7 @@ void Cube::genPoints(vec3 norm, int a, int b, int c, int d, bool faceTriangles)
 	}
 }
 
-void Cube::init(const char *textureFile)
+void ObjectRectangle::init(const char *textureFile)
 {
 	m_textureOn = (textureFile[0] != '\0')? true: false;
 
@@ -93,7 +80,7 @@ void Cube::init(const char *textureFile)
 	m_textureUV = new vec2[numVertices];
 	m_edges = new vec4[numEdges];
 
-	genCube();	// generate cube points
+	genRectangle();	// generate Rectangle points
 
 	// Create a vertex array object
 #ifdef __APPLE__
@@ -162,7 +149,9 @@ void Cube::init(const char *textureFile)
 	delete [] m_edges;
 }
 
-void Cube::draw(bool edges, bool mesh)
+float depth = 1.0, height = 1.0, width = 5.0;
+
+void ObjectRectangle::draw(bool edges, bool mesh)
 {
 	// Use current object's program
 	glUseProgram(m_program);
@@ -177,7 +166,7 @@ void Cube::draw(bool edges, bool mesh)
 	glBindTexture(GL_TEXTURE_2D, m_textureBufferObject);
 
 	// Get transformation matrices
-	mat4 transform = Translate(m_location) *  RotateZ(m_rotAngle.z) * RotateY(m_rotAngle.y) * RotateX(m_rotAngle.x) * Scale(m_size);
+	mat4 transform = Translate(m_location) * RotateZ(m_rotAngle.z) * RotateY(m_rotAngle.y) * RotateX(m_rotAngle.x) * Scale(m_scale * width/2.0, m_scale * height/2.0, m_scale * depth/2.0);
 
 	// Pass uniform data to the shader program
 	glUniformMatrix4fv(glGetUniformLocation(m_program, "wMo"), 1, GL_TRUE, transform);
@@ -196,7 +185,7 @@ void Cube::draw(bool edges, bool mesh)
 	glUniform1f(glGetUniformLocation(m_program, "Shininess"), m_shininess);
 	glUniform4fv(glGetUniformLocation(m_program, "lightColor"), 1, m_lightPtr->getColor());
 
-	// Draw cube edges
+	// Draw Rectangle edges
 	if(edges)
 	{
 		glUniform4fv(glGetUniformLocation(m_program, "Color"), 1, vec4(0.0, 0.0, 1.0, 1.0));
@@ -219,49 +208,49 @@ void Cube::draw(bool edges, bool mesh)
 
 // ------------------------------- MODIFIERS ---------------------------------
 
-void Cube::setSize(float size)
+void ObjectRectangle::setSize(float scale)
 {
-	m_size = size;
+	m_scale = scale;
 }
 
-void Cube::setColor(vec4 color)
+void ObjectRectangle::setColor(vec4 color)
 {
 	m_color = color;
 }
 
-void Cube::setLocation(vec3 location)
+void ObjectRectangle::setLocation(vec3 location)
 {
 	m_location = location;
 }
 
-void Cube::setAmbient(float ambient)
+void ObjectRectangle::setAmbient(float ambient)
 {
 	m_ambient = ambient;
 }
 
-void Cube::setDiffuse(float diffuse)
+void ObjectRectangle::setDiffuse(float diffuse)
 {
 	m_diffuse = diffuse;
 }
 
-void Cube::setSpecular(float specular)
+void ObjectRectangle::setSpecular(float specular)
 {
 	m_specular = specular;
 }
 
-void Cube::setShininess(float shininess)
+void ObjectRectangle::setShininess(float shininess)
 {
 	m_shininess = shininess;
 }
 
-void Cube::rotateX(float angle)
+void ObjectRectangle::rotateX(float angle)
 {
 	m_rotAngle.x += angle;
 	if(m_rotAngle.x >= 360.0f)
 		m_rotAngle.x -= 360.0f;
 }
 
-void Cube::rotateY(float angle)
+void ObjectRectangle::rotateY(float angle)
 {
 	m_rotAngle.y = angle;
 	//m_rotAngle.y += angle;
@@ -269,7 +258,7 @@ void Cube::rotateY(float angle)
 	//	m_rotAngle.y -= 360.0f;
 }
 
-void Cube::rotateZ(float angle)
+void ObjectRectangle::rotateZ(float angle)
 {
 	m_rotAngle.z += angle;
 	if(m_rotAngle.z >= 360.0f)
@@ -281,12 +270,12 @@ void Cube::rotateZ(float angle)
 
 // ------------------------------- ACCESSORS ---------------------------------
 
-vec3 Cube::getLocation()
+vec3 ObjectRectangle::getLocation()
 {
 	return vec3(m_location.x, m_location.y, m_location.z);
 }
 
-float Cube::getSize()
+float ObjectRectangle::getSize()
 {
-	return m_size;
+	return m_scale;
 }

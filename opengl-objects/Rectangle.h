@@ -39,15 +39,15 @@ const vec4 vertices[8] = {
 };
 
 
-class Cube
+class ObjectRectangle
 {
 public:
-	Cube(float size, vec3 location, vec4 color, float ambient, float diffuse,
+	ObjectRectangle(float size, vec3 location, vec4 color, float ambient, float diffuse,
 		float specular, float shininess, Camera *camera, Light *light);
 
-	// Generate cube vertices
+	// Generate Rectangle vertices
 	void genPoints(vec3 norm, int a, int b, int c, int d, bool faceTriangles);
-	void genCube();
+	void genRectangle();
 
 	// Buffer operations
 	void init(const char *textureFile);
@@ -85,8 +85,11 @@ private:
 	vec2 *m_textureUV;
 	int m_numVertices;
 
-	// Cube details
-	float m_size;
+	// Object details
+	float m_scale;
+	float m_width;	// delta X
+	float m_height;	// delta Y
+	float m_depth;	// delta Z
 	vec4 m_location;
 	vec4 m_color;
 	float m_ambient;

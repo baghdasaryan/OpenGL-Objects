@@ -25,8 +25,8 @@ void printToConsole()
 // Create and send objects to the GPU
 void initScene()
 {
-	cubes[0] = new Cube(1.0f, vec3(0.0f, 1.5f, 3.0f), vec4(1.0f, 0.0f, 0.0f, 1.0f), 0.2f, 0.6f, 0.2f, 100.0f, &camera, &light);
-	cubes[0]->init("");
+	rectangles[0] = new ObjectRectangle(1.0f, vec3(0.0f, 1.5f, 3.0f), vec4(1.0f, 0.0f, 0.0f, 1.0f), 0.2f, 0.6f, 0.2f, 100.0f, &camera, &light);
+	rectangles[0]->init("");
 
 	// Set OpenGL parameters
 	glEnable(GL_DEPTH_TEST);
@@ -37,13 +37,13 @@ void initScene()
 void drawScene()
 {
 	// Draw the objects
-	cubes[0]->draw(true, 0);		// bool => edges, number => mesh
+	rectangles[0]->draw(true, 0);		// bool => edges, number => mesh
 }
 
 // Clean up
 void cleanUp()
 {
-	delete cubes[0];
+	delete rectangles[0];
 }
 
 

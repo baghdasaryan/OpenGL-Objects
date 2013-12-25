@@ -13,7 +13,6 @@
 #ifndef __MAIN_H__
 #define __MAIN_H__
 
-#include "Windows.h"
 #include "Angel.h"
 #include "Camera.h"
 #include "Light.h"
@@ -54,7 +53,7 @@ int FRAME_COUNT = 0;
 double MONSTER_TIME = 0;
 
 // Objects
-Cube *cubes[2];
+ObjectRectangle *rectangles[2];
 
 bool soundOn = false;
 
