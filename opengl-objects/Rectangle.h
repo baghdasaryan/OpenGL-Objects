@@ -13,8 +13,8 @@
 #ifndef __RECTANGLE_H__
 #define __RECTANGLE_H__
 
-
-
+// test quaternions
+#include "gQuaternion.h"
 
 
 #include <math.h>
@@ -107,8 +107,5 @@ private:
 	// Helper variables
 	int m_index;
 };
-
-
-
 
 #endif  // __RECTANGLE_H__

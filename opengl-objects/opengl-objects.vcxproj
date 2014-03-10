@@ -75,8 +75,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Angel.h" />
+    <ClInclude Include="Ball.h" />
+    <ClInclude Include="BallAux.h" />
+    <ClInclude Include="BallMath.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CheckError.h" />
+    <ClInclude Include="gQuaternion.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="mat.h" />
@@ -89,6 +93,9 @@
     <ClInclude Include="vec.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Ball.cpp" />
+    <ClCompile Include="BallAux.cpp" />
+    <ClCompile Include="BallMath.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="InitShader.cpp" />
     <ClCompile Include="Light.cpp" />

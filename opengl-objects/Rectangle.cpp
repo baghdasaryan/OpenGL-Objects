@@ -164,9 +164,17 @@ void ObjectRectangle::draw(bool edges, bool mesh)
 #endif
     glBindBuffer(GL_ARRAY_BUFFER, m_vertexBufferObject);
 	glBindTexture(GL_TEXTURE_2D, m_textureBufferObject);
+	
+	mat4 qRotation;
+	quat gQuat = quat(30 * DegreesToRadians, vec3(1.0f, 1.0f, 1.0f));
+	gQuat.quatToMatrix(qRotation);
+
 
 	// Get transformation matrices
-	mat4 transform = Translate(m_location) * RotateZ(m_rotAngle.z) * RotateY(m_rotAngle.y) * RotateX(m_rotAngle.x) * Scale(m_scale * width/2.0, m_scale * height/2.0, m_scale * depth/2.0);
+	mat4 transform = Translate(m_location) 
+		* RotateZ(m_rotAngle.z) * RotateY(m_rotAngle.y) * RotateX(m_rotAngle.x)
+		* qRotation
+		* Scale(m_scale * width/2.0, m_scale * height/2.0, m_scale * depth/2.0);
 
 	// Pass uniform data to the shader program
 	glUniformMatrix4fv(glGetUniformLocation(m_program, "wMo"), 1, GL_TRUE, transform);
@@ -176,7 +184,6 @@ void ObjectRectangle::draw(bool edges, bool mesh)
 	// vShader
 	glUniform4fv(glGetUniformLocation(m_program, "camPos"), 1, m_camPtr->getPosition());
 	glUniform4fv(glGetUniformLocation(m_program, "lightPos"), 1, m_lightPtr->getPosition());
-
 
 	// fShader
 	glUniform1f(glGetUniformLocation(m_program, "Ambient"), m_ambient);

@@ -12,7 +12,7 @@
 
 #include "Camera.h"
 
-Camera::Camera(float radius, float initAngle, 
+Camera::Camera(float radius, float initAngle, vec4 at,
 			   GLfloat zNear, GLfloat zFar, GLfloat fovy)
 {
 	m_angle = 90.0 - initAngle;
@@ -20,7 +20,7 @@ Camera::Camera(float radius, float initAngle,
 	m_phi = 0.0;
 	m_theta = m_angle;
 
-	m_at = vec4(0.0, 0.0, 0.0, 1.0);
+	m_at = at;
 	m_up = vec4(0.0, 1.0, 0.0, 0.0);
 
 	m_initRadius = radius;

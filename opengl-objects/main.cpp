@@ -61,33 +61,35 @@ void keyboardCallback(unsigned char key, int x, int y)
 	switch(key)
 	{
 	case 033:				// Exit on ESC
-	case 113:				// Exit on 'q'
-	case 81:				// Exit on 'Q'
+	case 'q':				// Exit on 'q'
+	case 'Q':				// Exit on 'Q'
 		cleanUp();
 		exit(0);
 		break;
 	case 32:				// reset default positioning on Space
 		break;
-	case 119:				// move camera up on 'w'
-	case 87:				// move camera up on 'W'
-		camera.vertical(0.01f);
+
+	case 'w':				// move camera up on 'w'
+	case 'W':				// move camera up on 'W'
+		camera.vertical(0.1f);
 		light.setPosition(camera.getPosition());
 		break;
-	case 115:				// move camera down on 's'
-	case 83:				// move camera down on 'S'
-		camera.vertical(-0.01f);
+	case 's':				// move camera down on 's'
+	case 'S':				// move camera down on 'S'
+		camera.vertical(-0.1f);
 		light.setPosition(camera.getPosition());
 		break;
-	case 97:				// move camera left on 'a'
-	case 65:				// move camera left on 'A'
-		camera.horizontal(-0.01f);
+	case 'a':				// move camera left on 'a'
+	case 'A':				// move camera left on 'A'
+		camera.horizontal(-0.1f);
 		light.setPosition(camera.getPosition());
 		break;
-	case 100:				// move camera right on 'd'
-	case 68:				// move camera right on 'D'
-		camera.horizontal(0.01f);
+	case 'd':				// move camera right on 'd'
+	case 'D':				// move camera right on 'D'
+		camera.horizontal(0.1f);
 		light.setPosition(camera.getPosition());
 		break;
+		
 	case 'x':				// move camera forward on 'x'
 	case 'X':				// move camera forward on 'X'
 		camera.distance(-2.0f);
@@ -131,15 +133,19 @@ void specialCallback(int key, int x, int y)
 	switch(key)
 	{
 	case GLUT_KEY_UP:			// negative rotation around X-axis
+		camera.altitude(-0.8);
+		light.setPosition(camera.getPosition());
 		break;
 	case GLUT_KEY_DOWN:			// positive rotation around X-axis
+		camera.altitude(0.8);
+		light.setPosition(camera.getPosition());
 		break;
 	case GLUT_KEY_LEFT:			// rotate cubes left around Y-axis
-		camera.azimuth(-1.0f);
+		camera.azimuth(-1.5f);
 		light.setPosition(camera.getPosition());
 		break;
 	case GLUT_KEY_RIGHT:		// rotate cubes right around Y-axis
-		camera.azimuth(1.0f);
+		camera.azimuth(1.5f);
 		light.setPosition(camera.getPosition());
 		break;
 	default:

@@ -10,6 +10,8 @@
 // ############################################ //
 
 
+#define FAST_SQRT_ON
+
 #ifndef __MAIN_H__
 #define __MAIN_H__
 
@@ -23,10 +25,10 @@
 // Global variables
 int window_width = 512;
 int window_height = 512;
-GLfloat fovy = 5.0;
-GLfloat zNear = 0.1;
-GLfloat zFar = 10000.0;
-Camera camera = Camera(128.0, 6.0, zNear, zFar, fovy);
+GLfloat fovy = 5.0f;
+GLfloat zNear = 0.1f;
+GLfloat zFar = 10000.0f;
+Camera camera = Camera(128.0f, 0.0f, vec4(0.0f, 0.0f, 0.0f, 1.0f), zNear, zFar, fovy);
 Light light = Light(camera.getPosition(), vec4(1.0, 1.0, 1.0, 1.0));
 
 // Function declarations

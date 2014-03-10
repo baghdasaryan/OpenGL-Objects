@@ -20,12 +20,13 @@
 class Camera
 {
 public:
-	Camera(float radius, float initAngle,
+	Camera(float radius, float initAngle, vec4 at,
 		GLfloat zNear, GLfloat zFar, GLfloat fovy);
 
 	mat4 getPerspective();
 	mat4 getTranslation();
 	vec4 getPosition();
+
 	void updateLocs();
 	void updateAspect(GLfloat aspect);
 	void updateAspect(double mult);
@@ -69,4 +70,5 @@ private:
 
 	mat4 m_perspective;
 };
+
 #endif  // __CAMERA_H__
