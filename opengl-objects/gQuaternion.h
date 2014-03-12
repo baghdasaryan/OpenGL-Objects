@@ -14,6 +14,7 @@
 #define __GQUATERNION_H__
 
 #include <math.h>
+#include "Config.h"
 #include "Angel.h"
 
 
@@ -47,10 +48,27 @@ public:
 
 	gQuaternion(T w, T x, T y, T z)
 	{
-		this.w = w;
-		this.x = x;
-		this.y = y;
-		this.z = z;
+		this->w = w;
+		this->x = x;
+		this->y = y;
+		this->z = z;
+	}
+
+	// Quaternion representing a vector/axis (no rotation)
+	gQuaternion(const vec3 &axis)
+	{
+		this->w = 0;
+		this->x = axis.x;
+		this->y = axis.y;
+		this->z = axis.z;
+	}
+
+	gQuaternion(const vec4 &axis)
+	{
+		this->w = axis.w;
+		this->x = axis.x;
+		this->y = axis.y;
+		this->z = axis.z;
 	}
 
 	// Create a quaternion from a rotation matrix
@@ -60,13 +78,13 @@ public:
         this->matrixToQuat(matrix);
     }
 	
-	// Create a quaternion from axis coordinates and an agle
+	// Create a quaternion from axis coordinates and an agle (in radians)
 	gQuaternion(T angle, const vec3 &axis)
     {
         this->axisAndAngleToQuat(angle, axis);
     }
 
-	// Create a quaternion from axis coordinates and an agle (same as above)
+	// Create a quaternion from axis coordinates and an agle (in radians) [same as the one above]
 	gQuaternion(T angle, const vec4 &axis)
     {
         this->axisAndAngleToQuat(angle, vec3(axis.x, axis.y, axis.z));
@@ -138,8 +156,9 @@ public:
 	{
 		T resW = w * src.w - x * src.x - y * src.y - z * src.z;
 		T resX = w * src.x + x * src.w + y * src.z - z * src.y;
-		T resY = w * src.y + y * src.w + z * src.x - x * src.z;
-		T resZ = w * src.z + z * src.w + x * src.y - y * src.x;
+		T resY = w * src.y - x * src.z + y * src.w + z * src.x;
+		T resZ = w * src.z + x * src.y - y * src.x + z * src.w;
+
 		
 		return gQuaternion(resW, resX, resY, resZ);
 	}
@@ -148,8 +167,8 @@ public:
 	{
 		w = w * src.w - x * src.x - y * src.y - z * src.z;
 		x = w * src.x + x * src.w + y * src.z - z * src.y;
-		y = w * src.y + y * src.w + z * src.x - x * src.z;
-		z = w * src.z + z * src.w + x * src.y - y * src.x;
+		y = w * src.y - x * src.z + y * src.w + z * src.x;
+		z = w * src.z + x * src.y - y * src.x + z * src.w;
 		
 		return *this;
 	}
@@ -167,6 +186,43 @@ public:
 		x *= val;
 		y *= val;
 		z *= val;
+
+		return *this;
+	}
+
+	gQuaternion operator/(const gQuaternion &src) const
+	{
+		T resW = w / src.w - x / src.x - y / src.y - z / src.z;
+		T resX = w / src.x + x / src.w + y / src.z - z / src.y;
+		T resY = w / src.y + y / src.w + z / src.x - x / src.z;
+		T resZ = w / src.z + z / src.w + x / src.y - y / src.x;
+		
+		return gQuaternion(resW, resX, resY, resZ);
+	}
+
+	gQuaternion operator/=(const gQuaternion &src) const
+	{
+		w = w / src.w - x / src.x - y / src.y - z / src.z;
+		x = w / src.x + x / src.w + y / src.z - z / src.y;
+		y = w / src.y + y / src.w + z / src.x - x / src.z;
+		z = w / src.z + z / src.w + x / src.y - y / src.x;
+		
+		return *this;
+	}
+
+	template<class var>
+	gQuaternion operator/(var val) const
+	{
+		return gQuaternion(w / val, x / val, y / val, z / val);
+	}
+
+	template<class var>
+	gQuaternion operator/=(var val)
+	{
+		w /= val;
+		x /= val;
+		y /= val;
+		z /= val;
 
 		return *this;
 	}
@@ -199,7 +255,7 @@ public:
 		matrix[3] = vec4(0.0f,						 0.0f,						 0.0f,						 1.0f);
 	}
 
-	// reference: "Quaternion Calculus and Fast Animation" article by Ken Shoemake
+	// reference: "Quaternion Calculus and Fast Animation" by Ken Shoemake
 	void matrixToQuat(const mat3 &matrix)
 	{
 		T trace = matrix[0][0] + matrix[1][1] + matrix[2][2];
@@ -246,17 +302,16 @@ public:
 		T squareLength = dot(axis, axis);
         if(squareLength > 0.0f)
         {
-			rfAngle = 2.0f * acos(w);
 #ifdef FAST_SQRT_ON
             T invLength = fastInvSqrt(squareLength);
             axis.x = x * invLength;
             axis.y = y * invLength;
             axis.z = z * invLength;
 #else
-			T length(squareLength);
-			axis.x = x / fInvLength;
-            axis.y = y / fInvLength;
-            axis.z = z / fInvLength;
+			T length = sqrt(squareLength);
+			axis.x = x / length;
+            axis.y = y / length;
+            axis.z = z / length;
 #endif
         }
         else
@@ -268,36 +323,85 @@ public:
         }
 	}
 
-private:
+	void quatToVector(vec4 &vec) const
+	{
+		vec.x = x;
+		vec.y = y;
+		vec.z = z;
+		vec.w = w;
+	}
+
+	vec4 quatToVector() const
+	{
+		return vec4(x, y, z, w);
+	}
+
+	void normalize()
+	{
+		T squareLength = dot(*this, *this);
+
+#ifdef FAST_SQRT_ON
+        T invLength = fastInvSqrt(squareLength);
+        *this *= invLength;
+#else
+		T length = sqrt(squareLength);
+		*this /= length;
+#endif
+	}
+
+	gQuaternion inverse() const
+	{
+		T squareLength = dot(*this, *this);
+		if (squareLength != 0)
+			return gQuaternion(w / squareLength, -x / squareLength, -y / squareLength, -z / squareLength);
+		else
+			return gQuaternion();
+	}
+
+	gQuaternion conjugate() const
+	{
+		return gQuaternion(w,-x,-y,-z);
+	}
+
+//private:
 	T w;
 	T x;
 	T y;
 	T z;
 };
 
-
-// Quake's inverse square root
 template<class T>
 inline
-T fastInvSqrt(T num)
-{
-	long i;
-	T x2, y;
-	const float threehalfs = 1.5F;
- 
-	x2 = num * 0.5F;
-	y  = num;
-	i  = * (long *) &y;                       // evil floating point bit level hacking
-	i  = 0x5f3759df - ( i >> 1 );             // what the fuck?
-	y  = * (float *) &i;
-	y  = y * (threehalfs - (x2 * y * y ));   // 1st iteration
-    y  = y * (threehalfs - (x2 * y * y ));   // 2nd iteration (not necessary)
- 
-	return y;
+GLfloat dot(const gQuaternion<T> &q1, const gQuaternion<T> &q2) {
+    return q1.w*q2.w + q1.x*q2.x + q1.y*q2.y + q1.z*q2.z;
 }
 
+template<class T>
+inline
+GLfloat length(const gQuaternion<T> &q)
+{
+    return sqrt(dot(q, q));
+}
 
-// So you don't have to type gQuaternion every single time
-typedef class gQuaternion<double> quat;
+template<class T>
+inline
+gQuaternion<T> normalize(const gQuaternion<T> &q)
+{
+		T squareLength = dot(q, q);
+		gQuaternion<T> res;
+
+#ifdef FAST_SQRT_ON
+        T invLength = fastInvSqrt(squareLength);
+        res = q * invLength;
+#else
+		T length = sqrt(squareLength);
+		res = q / length;
+#endif
+
+		return res;
+}
+
+// So that you don't have to type gQuaternion every single time
+typedef class gQuaternion<float> quat;
 
 #endif // __GQUATERNION_H__

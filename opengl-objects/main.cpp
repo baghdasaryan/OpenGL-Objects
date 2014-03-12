@@ -37,7 +37,7 @@ void initScene()
 void drawScene()
 {
 	// Draw the objects
-	rectangles[0]->draw(true, 0);		// bool => edges, number => mesh
+	rectangles[0]->draw(edgesOn, meshOn);		// bool => edges, number => mesh
 }
 
 // Clean up
@@ -69,6 +69,16 @@ void keyboardCallback(unsigned char key, int x, int y)
 	case 32:				// reset default positioning on Space
 		break;
 
+	case 'e':				// switch between drawing edges on 'e'
+	case 'E':				// switch between drawing edges on 'E'
+		edgesOn = !edgesOn;
+		break;
+
+	case 'm':				// switch between drawing the mesh and filling the object on 'm'
+	case 'M':				// switch between drawing the mesh and filling the object on 'M'
+		meshOn = !meshOn;
+		break;
+
 	case 'w':				// move camera up on 'w'
 	case 'W':				// move camera up on 'W'
 		camera.vertical(0.1f);
@@ -89,7 +99,26 @@ void keyboardCallback(unsigned char key, int x, int y)
 		camera.horizontal(0.1f);
 		light.setPosition(camera.getPosition());
 		break;
-		
+
+	case '8':				// look up on '8'
+		camera.pitch(-0.03);
+		break;
+	case '2':				// look down on '2'
+		camera.pitch(0.03f);
+		break;
+	case '4':				// look left on '4'
+		camera.yaw(0.05f);
+		break;
+	case '6':				// look right on '6'
+		camera.yaw(-0.05f);
+		break;
+	case '1':				// rotate camera left on '1'
+		camera.roll(3.5f);
+		break;
+	case '3':				// rotate camera right on '3'
+		camera.roll(-3.5f);
+		break;
+
 	case 'x':				// move camera forward on 'x'
 	case 'X':				// move camera forward on 'X'
 		camera.distance(-2.0f);
@@ -98,11 +127,13 @@ void keyboardCallback(unsigned char key, int x, int y)
 	case 'Z':				// move camera backwards on 'Z'
 		camera.distance(2.0f);
 		break;
+
 	case 'r':				// reset camera position on 'r'
 	case 'R':				// reset camera position on 'R'
 		camera.reset();
 		light.setPosition(camera.getPosition());
 		break;
+
 	case 'u':				// increase camera altitude on 'u'
 	case 'U':				// increase camera altitude on 'U'
 		camera.altitude(-0.5);
@@ -133,11 +164,11 @@ void specialCallback(int key, int x, int y)
 	switch(key)
 	{
 	case GLUT_KEY_UP:			// negative rotation around X-axis
-		camera.altitude(-0.8);
+		camera.altitude(0.8);
 		light.setPosition(camera.getPosition());
 		break;
 	case GLUT_KEY_DOWN:			// positive rotation around X-axis
-		camera.altitude(0.8);
+		camera.altitude(-0.8);
 		light.setPosition(camera.getPosition());
 		break;
 	case GLUT_KEY_LEFT:			// rotate cubes left around Y-axis

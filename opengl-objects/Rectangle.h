@@ -18,6 +18,7 @@
 
 
 #include <math.h>
+#include "Config.h"
 #include "Angel.h"
 #include "Camera.h"
 #include "Light.h"

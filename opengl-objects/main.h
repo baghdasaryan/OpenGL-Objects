@@ -10,11 +10,10 @@
 // ############################################ //
 
 
-#define FAST_SQRT_ON
-
 #ifndef __MAIN_H__
 #define __MAIN_H__
 
+#include "Config.h"
 #include "Angel.h"
 #include "Camera.h"
 #include "Light.h"
@@ -58,5 +57,7 @@ double MONSTER_TIME = 0;
 ObjectRectangle *rectangles[2];
 
 bool soundOn = false;
+bool edgesOn = true;
+bool meshOn = false;
 
 #endif  // __MAIN_H__

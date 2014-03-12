@@ -54,19 +54,16 @@
     <ClInclude Include="GLutils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Ball.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BallAux.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BallMath.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="gQuaternion.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Config.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gUtils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -93,15 +90,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GLutils.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Ball.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="BallAux.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="BallMath.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">

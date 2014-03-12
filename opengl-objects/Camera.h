@@ -15,7 +15,15 @@
 
 
 #include <math.h>
+#include "Config.h"
+#include "gUtils.h"
 #include "Angel.h"
+#include "gQuaternion.h"
+
+#ifdef QUAT_ANALYSIS_ON
+#include <iostream>
+#endif // QUAT_ANALYSIS_ON
+
 
 class Camera
 {
@@ -27,7 +35,10 @@ public:
 	mat4 getTranslation();
 	vec4 getPosition();
 
+#ifndef QUATERNIONS_ON
 	void updateLocs();
+#endif // QUATERNIONS_ON
+
 	void updateAspect(GLfloat aspect);
 	void updateAspect(double mult);
 	void updateFovy(GLfloat fovy);
@@ -38,13 +49,16 @@ public:
 
 	void altitude(float angle);
 	void azimuth(float angle);
-
-	float getPhi()
-	{
-		return m_phi;
-	}
+	
+	void yaw(float angle);		// use negative angle for positive yaw
+	void pitch(float angle);	// use negative angle for positive pitch
+	void roll(float angle);		// use negative angle for positive roll
 
 	void reset();
+
+#ifdef QUAT_ANALYSIS_ON
+	void quatEulerComparison(float angle);
+#endif // QUAT_ANALYSIS_ON
 
 private:
 	vec4 m_eye;
@@ -69,6 +83,12 @@ private:
 	GLfloat m_aspect;
 
 	mat4 m_perspective;
+
+	// Used for quaternion analysis
+#ifdef QUAT_ANALYSIS_ON
+	double camHorRotAngle;
+	int count;
+#endif // QUAT_ANALYSIS_ON
 };
 
 #endif  // __CAMERA_H__
