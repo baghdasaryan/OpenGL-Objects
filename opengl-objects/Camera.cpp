@@ -68,11 +68,10 @@ void Camera::updateLocs()
 	m_eye.y = m_radius * cos(m_theta*DegreesToRadians) + m_moveVert;
 	m_eye.z = m_radius * sin(m_theta*DegreesToRadians) * cos(m_phi*DegreesToRadians);
 
-
 	// ERROR.... quats and euler coords killing each other  -->  set QUATERNIONS_ON option in Config.h
-	m_up.x = m_up.x * sin((m_theta - 90.0f)*DegreesToRadians) * sin(m_phi*DegreesToRadians);
-	m_up.y = m_up.y * cos((m_theta - 90.0f)*DegreesToRadians);
-	m_up.z = m_up.z * sin((m_theta - 90.0f)*DegreesToRadians) * cos(m_phi*DegreesToRadians);
+	m_up.x = sin((m_theta - 90.0f)*DegreesToRadians) * sin(m_phi*DegreesToRadians);
+	m_up.y = cos((m_theta - 90.0f)*DegreesToRadians);
+	m_up.z = sin((m_theta - 90.0f)*DegreesToRadians) * cos(m_phi*DegreesToRadians);
 }
 #endif // QUATERNIONS_ON
 

@@ -29,14 +29,12 @@
 #  include "GL/freeglut.h"
 #endif
 
-#include "Eigen/Dense"
-
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
 #endif
 
 #ifndef DEGREES_TO_RADIANS
-#define DEGREES_TO_RADIANS 0.01745329251994329576922222222222	// Same as (M_PI / 180.0)
+#define DEGREES_TO_RADIANS 0.01745329251994329576922222222222	// Same as (M_PI / 180.0f)
 #endif
 
 #ifndef GRAVITY_ACC

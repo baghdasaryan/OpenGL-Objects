@@ -16,7 +16,7 @@
 
 //#define FAST_SQRT_ON
 #define QUAT_ANALYSIS_ON
-#define QUATERNIONS_ON
+//#define QUATERNIONS_ON
 
 
 
